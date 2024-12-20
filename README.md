@@ -1,2 +1,2 @@
 # literalura
-Challenge Java Alura, Litealura
+Challenge Java Alura, Literalura
