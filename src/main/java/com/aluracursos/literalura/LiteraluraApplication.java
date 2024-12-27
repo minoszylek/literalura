@@ -23,7 +23,7 @@ public class LiteraluraApplication implements CommandLineRunner {
 			switch (toolKit.getOption()) {
 
 				case 1: {
-					System.out.println("Ingresa el nombre del libro que deseas buscar: ");
+					toolKit.searchBookForTitle();
 					break;
 				}
 				case 2: {
