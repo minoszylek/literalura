@@ -23,18 +23,21 @@ public class ToolKit {
                 this.userInputOption = scanner.nextByte();
                 if (userInputOption == 0) {
                     this.option = userInputOption;
+                    scanner.nextLine();
                     break;
                 }
                 if (options.contains(userInputOption)) {
                     this.option = userInputOption;
+                    scanner.nextLine();
                     break;
                 } else {
-                    System.out.println(option + " no es una opción válida, debes ingresar un número de las opciones del menú!");
+                    System.out.println("'" + userInputOption + "'" + " no es una opción válida.\n¡Debes ingresar un número de las opciones del menú!");
                     scanner.nextLine();
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Solo debes ingresar números para seleccionar una opción!");
-                scanner.nextLine();
+                String invalidInput = scanner.nextLine();
+                System.out.println("'"+ invalidInput +"'" +" no es una opción válida.\n¡Solo debes ingresar los números del menú!");
+                break;
             }
         }
     }
@@ -49,24 +52,23 @@ public class ToolKit {
                 .sorted(Comparator.comparing(Book::downloads)
                         .reversed())
                 .limit(1)
-                .forEach(b -> System.out.println(b.title()));
+                .forEach(b -> System.out.println(b.toString()));
         scanner.nextLine();
     }
 
     public String getUserMenuOptions() {
         return """
+                
                 #################################################
-                Seleccione la opción de preferencia:
+                Seleccione una opción:
                 
                 1. Buscar libro por título.
                 2. Listar libros registrados.
                 3. Listar autores resgistrados.
                 4. Listar autores vivos en un determinado año.
                 5. Listar libros por idioma.
-                
                 0. Salir.
                 #################################################
-                
                 """;
     }
 
