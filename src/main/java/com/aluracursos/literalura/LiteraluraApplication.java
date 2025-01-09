@@ -32,7 +32,7 @@ public class LiteraluraApplication implements CommandLineRunner {
 				}
 			}
 		}
-		System.out.println("¡Gracias por usar nuestra aplicación!");
+		System.out.println("Cerrando aplicación...");
 
 	}
 }

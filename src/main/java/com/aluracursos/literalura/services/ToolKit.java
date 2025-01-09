@@ -1,10 +1,12 @@
 package com.aluracursos.literalura.services;
 
 import com.aluracursos.literalura.models.Book;
+import com.aluracursos.literalura.models.BookData;
 import com.aluracursos.literalura.models.Query;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ToolKit {
     private final List<Byte> options = List.of((byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5, (byte) 0);
@@ -14,6 +16,7 @@ public class ToolKit {
     private String search = "";
     private final CallToAPI callToAPI = new CallToAPI();
     private final Deserialization deserialization = new Deserialization();
+    List<Book> books;
 
     public void menu(String menu, List<Byte> options) {
 
@@ -21,39 +24,48 @@ public class ToolKit {
             System.out.println(menu);
             try {
                 this.userInputOption = scanner.nextByte();
+                scanner.nextLine();
                 if (userInputOption == 0) {
                     this.option = userInputOption;
-                    scanner.nextLine();
                     break;
                 }
                 if (options.contains(userInputOption)) {
                     this.option = userInputOption;
-                    scanner.nextLine();
                     break;
                 } else {
                     System.out.println("'" + userInputOption + "'" + " no es una opción válida.\n¡Debes ingresar un número de las opciones del menú!");
-                    scanner.nextLine();
+                    menu(getUserMenuOptions(), getOptions());
+                    break;
                 }
             } catch (InputMismatchException e) {
                 String invalidInput = scanner.nextLine();
                 System.out.println("'"+ invalidInput +"'" +" no es una opción válida.\n¡Solo debes ingresar los números del menú!");
-                break;
             }
         }
     }
 
     public void searchBookForTitle() throws IOException, InterruptedException {
         System.out.println("Ingresa el nombre del libro que deseas buscar: ");
-        this.search = scanner.next();
-        var books = deserialization.deserialzationData(callToAPI.call(search.replace(" ", "+")), Query.class);
-
-        books.books()
+        this.search = scanner.nextLine();
+        var query = deserialization.deserialzationData(callToAPI.call(search.replace(" ", "+")), Query.class);
+        System.out.println(query);
+        Optional<Book> equalBook = query.books()
                 .stream()
-                .sorted(Comparator.comparing(Book::downloads)
-                        .reversed())
-                .limit(1)
-                .forEach(b -> System.out.println(b.toString()));
-        scanner.nextLine();
+                .filter(b -> b.title().equalsIgnoreCase(search))
+                .map(Book::new)
+                .findFirst();
+        if (equalBook.isEmpty()) {
+            Optional<Book> book = query.books()
+                    .stream()
+                    .filter(b -> b.title().toLowerCase().contains(search.toLowerCase()))
+                    .map(Book::new)
+                    .findFirst();
+            if (book.isEmpty()) {
+                System.out.println("No se encontró ningún libro con el nombre: " + search);
+            }
+            book.ifPresent(System.out::println);
+        }
+        equalBook.ifPresent(System.out::println);
     }
 
     public String getUserMenuOptions() {

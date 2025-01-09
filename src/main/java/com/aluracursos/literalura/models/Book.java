@@ -1,16 +1,31 @@
 package com.aluracursos.literalura.models;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
-@JsonIgnoreProperties (ignoreUnknown = true)
-public record Book(
-        @JsonAlias("id") Integer id,
-        @JsonAlias("title") String title,
-        @JsonAlias("authors") List<Author> authors,
-        @JsonAlias("languages") List<String> languages,
-        @JsonAlias("download_count") Integer downloads
-        ) {
+public class Book {
+    private Integer id;
+    private String title;
+    private List<Author> authors;
+    private List<String> languages;
+    private Integer downloads;
+
+    public Book (BookData bookData) {
+        this.id = bookData.id();
+        this.title = bookData.title();
+        this.languages = bookData.languages();
+        this.downloads = bookData.downloads();
+        this.authors = bookData.authors()
+                .stream()
+                .map(a -> new Author(a)).toList();
+    }
+
+    @Override
+    public String toString() {
+        return "Book: " +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", authors=" + authors +
+                ", languages=" + languages +
+                ", downloads=" + downloads;
+    }
 }

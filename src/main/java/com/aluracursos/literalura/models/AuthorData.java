@@ -2,10 +2,11 @@ package com.aluracursos.literalura.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Query(
-        @JsonAlias("results")List<BookData> books
-        ) {
+public record AuthorData(
+        @JsonAlias("name") String name,
+        @JsonAlias("birth_year") Short birthYear,
+        @JsonAlias("death_year") Short deathYear
+) {
 }
