@@ -1,31 +1,76 @@
 package com.aluracursos.literalura.models;
 
-import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
+@Table (name = "books")
 public class Book {
-    private Integer id;
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Integer gutendexId;
+    @Column(unique = true)
     private String title;
-    private List<Author> authors;
-    private List<String> languages;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+    private String language;
     private Integer downloads;
 
     public Book (BookData bookData) {
-        this.id = bookData.id();
+        this.gutendexId = bookData.id();
         this.title = bookData.title();
-        this.languages = bookData.languages();
-        this.downloads = bookData.downloads();
-        this.authors = bookData.authors()
+        this.author = bookData.authors()
                 .stream()
-                .map(a -> new Author(a)).toList();
+                .map(Author::new).toList().get(0);
+        this.language = bookData.languages().get(0).trim();
+        this.downloads = bookData.downloads();
+
+    }
+
+    public Book() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public Integer getDownloads() {
+        return downloads;
+    }
+
+    public void setDownloads(Integer downloads) {
+        this.downloads = downloads;
     }
 
     @Override
     public String toString() {
         return "Book: " +
-                "id=" + id +
+                "idDb=" + id +
+                ", gutendexId=" + gutendexId +
                 ", title='" + title + '\'' +
-                ", authors=" + authors +
-                ", languages=" + languages +
+                ", author=" + author +
+                ", language=" + language +
                 ", downloads=" + downloads;
     }
 }
