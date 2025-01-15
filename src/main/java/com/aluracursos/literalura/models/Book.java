@@ -11,7 +11,7 @@ public class Book {
     private Integer gutendexId;
     @Column(unique = true)
     private String title;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
     private String language;
@@ -65,12 +65,10 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book: " +
-                "idDb=" + id +
-                ", gutendexId=" + gutendexId +
-                ", title='" + title + '\'' +
-                ", author=" + author +
-                ", language=" + language +
-                ", downloads=" + downloads;
+        return  "\n____________________LIBRO____________________" +
+                "\n Título: '" + title + '\'' +
+                "\n Autor: " + author.getName() +
+                "\n Lenguaje: " + language +
+                "\n Total descargas:" + downloads  + "\n";
     }
 }

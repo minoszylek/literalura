@@ -1,10 +1,10 @@
 package com.aluracursos.literalura.models;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
+
 @Entity
 @Table(name= "authors")
 public class Author {
@@ -16,7 +16,7 @@ public class Author {
     private Integer birthYear;
     private Integer deathYear;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Book> book = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
 
     public Author(AuthorData authorData) {
         this.name = authorData.name();
@@ -49,20 +49,21 @@ public class Author {
     }
 
     public List<Book> getBook() {
-        return book;
+        return books;
     }
 
     public void setBook (Book book) {
-        this.book.add(book);
+        this.books.add(book);
         book.setAuthor(this);
     }
 
     @Override
     public String toString() {
-        return "Author: " +
-                "dbId=" + id +
-                ", name='" + name + '\'' +
-                ", birthYear=" + birthYear +
-                ", deathYear=" + deathYear;
+        return  "\n--------------------AUTOR--------------------" +
+                "\n Nombre: '" + name + '\'' +
+                "\n Fecha de nacimiento: " + birthYear +
+                "\n Fecha de muerte: " + deathYear +
+                "\n Libros: =" + books.stream().map(Book::getTitle).toList() +
+                "\n---------------------------------------------\n";
     }
 }

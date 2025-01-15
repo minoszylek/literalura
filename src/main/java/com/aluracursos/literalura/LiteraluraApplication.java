@@ -29,7 +29,19 @@ public class LiteraluraApplication implements CommandLineRunner {
 					break;
 				}
 				case 2: {
-					System.out.println("Listar libros!");
+					toolKit.searchBooks();
+					break;
+				}
+				case 3: {
+					toolKit.searchAuthors();
+					break;
+				}
+				case 4: {
+					toolKit.livingAuthorsByYear();
+					break;
+				}
+				case 5: {
+					toolKit.searchBooksByLanguage();
 					break;
 				}
 			}
