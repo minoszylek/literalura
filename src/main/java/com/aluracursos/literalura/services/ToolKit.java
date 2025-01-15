@@ -61,7 +61,6 @@ public class ToolKit {
         System.out.println("Ingresa el nombre del libro que deseas buscar: ");
         this.search = scanner.nextLine();
         var query = deserialization.deserialzationData(callToAPI.call(search.replace(" ", "+")), Query.class);
-        System.out.println(query);
         Optional<Book> equalBook = query.books()
                 .stream()
                 .filter(b -> b.title().equalsIgnoreCase(search))
@@ -79,11 +78,9 @@ public class ToolKit {
                 System.out.println("No se encontró ningún libro con el nombre: " + search);
                 return null;
             }
-            System.out.println("Libro que contiene el nombre: " + book.get());
             bookReturn = book.get();
             return bookReturn;
         }
-        System.out.println("Libro preciso: " + equalBook.get());
         bookReturn = equalBook.get();
         return bookReturn;
     }
@@ -98,7 +95,6 @@ public class ToolKit {
                 System.out.println("\nAutor y Libro guardados =)\n\n" + book);
             }
             Author authorExist = authorSerach.get();
-            System.out.println("El Autor es: " + authorExist);
             var bookSearch = bookRepository.findByTitle(book.getTitle());
             if (bookSearch.isEmpty()) {
                 System.out.println("El Libro es: " + book);
@@ -107,7 +103,7 @@ public class ToolKit {
                 bookRepository.save(book);
                 System.out.println("\nLibro guardado =)\n\n" + book);
             }
-            System.out.println("\nEl libro ya está registrado!\n\n" + bookSearch);
+            System.out.println("\nEl libro ya está registrado!\n\n" + bookSearch.get());
         }catch (NullPointerException e) {
             System.out.println("=(");
         }
